@@ -25,8 +25,14 @@ add_executable(bucketmesh_domain_tests
 )
 target_link_libraries(bucketmesh_domain_tests PRIVATE oci_bucket_mesh_core)
 
+add_executable(bucketmesh_mapping_tests
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/mapping_source_tests.cpp
+)
+target_link_libraries(bucketmesh_mapping_tests PRIVATE oci_bucket_mesh_core)
+
 if(BUILD_TESTING)
   add_test(NAME bucketmesh_domain_tests COMMAND bucketmesh_domain_tests)
+  add_test(NAME bucketmesh_mapping_tests COMMAND bucketmesh_mapping_tests)
 endif()
 
 message(STATUS "OciBucketMesh core implementation scaffold enabled")
