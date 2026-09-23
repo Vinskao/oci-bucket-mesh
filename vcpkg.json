@@ -1,0 +1,22 @@
+{
+  "name": "oci-bucket-mesh",
+  "version-semver": "0.1.0",
+  "description": "Architecture manifest for TY Multiverse OCI Object Storage data plane",
+  "license": "UNLICENSED",
+  "dependencies": [
+    "boost-asio",
+    "curl",
+    "drogon",
+    "grpc",
+    "hiredis",
+    "jwt-cpp",
+    "nlohmann-json",
+    "openssl",
+    "prometheus-cpp",
+    "protobuf",
+    "rabbitmq-c",
+    "redis-plus-plus",
+    "spdlog",
+    "yaml-cpp"
+  ]
+}

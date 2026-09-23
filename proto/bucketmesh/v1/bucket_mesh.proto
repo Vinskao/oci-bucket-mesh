@@ -1,0 +1,97 @@
+syntax = "proto3";
+
+package bucketmesh.v1;
+
+option go_package = "bucketmesh/v1;bucketmeshv1";
+option java_multiple_files = true;
+option java_package = "tw.com.tymbackend.bucketmesh.v1";
+
+service ObjectMeshService {
+  rpc GetObjectMetadata (GetObjectMetadataRequest) returns (ObjectMetadataResponse);
+  rpc CreateTransferJob (CreateTransferJobRequest) returns (TransferJobResponse);
+  rpc GetTransferJob (GetTransferJobRequest) returns (TransferJobResponse);
+  rpc CancelTransferJob (CancelTransferJobRequest) returns (CancelTransferJobResponse);
+  rpc GenerateDownloadUrl (GenerateDownloadUrlRequest) returns (GenerateDownloadUrlResponse);
+}
+
+message GetObjectMetadataRequest {
+  string bucket = 1;
+  string object_name = 2;
+  string namespace = 3;
+}
+
+message ObjectMetadataResponse {
+  string bucket = 1;
+  string object_name = 2;
+  int64 content_length = 3;
+  string content_type = 4;
+  string etag = 5;
+  string md5 = 6;
+  int64 last_modified_unix = 7;
+}
+
+enum TransferDirection {
+  TRANSFER_DIRECTION_UNSPECIFIED = 0;
+  TRANSFER_DIRECTION_UPLOAD = 1;
+  TRANSFER_DIRECTION_DOWNLOAD = 2;
+}
+
+enum TransferStatus {
+  TRANSFER_STATUS_UNSPECIFIED = 0;
+  TRANSFER_STATUS_PENDING = 1;
+  TRANSFER_STATUS_IN_PROGRESS = 2;
+  TRANSFER_STATUS_COMPLETED = 3;
+  TRANSFER_STATUS_FAILED = 4;
+  TRANSFER_STATUS_CANCELLED = 5;
+}
+
+message CreateTransferJobRequest {
+  string idempotency_key = 1;
+  TransferDirection direction = 2;
+  string bucket = 3;
+  string object_name = 4;
+  int64 expected_size_bytes = 5;
+  string correlation_id = 6;
+}
+
+message GetTransferJobRequest {
+  string job_id = 1;
+}
+
+message CancelTransferJobRequest {
+  string job_id = 1;
+  string reason = 2;
+}
+
+message CancelTransferJobResponse {
+  string job_id = 1;
+  bool cancelled = 2;
+  string message = 3;
+}
+
+message TransferJobResponse {
+  string job_id = 1;
+  string idempotency_key = 2;
+  TransferDirection direction = 3;
+  TransferStatus status = 4;
+  string bucket = 5;
+  string object_name = 6;
+  int64 total_bytes = 7;
+  int64 transferred_bytes = 8;
+  string etag = 9;
+  string error_code = 10;
+  string error_message = 11;
+  int64 created_at_unix = 12;
+  int64 updated_at_unix = 13;
+}
+
+message GenerateDownloadUrlRequest {
+  string bucket = 1;
+  string object_name = 2;
+  int64 expires_in_seconds = 3;
+}
+
+message GenerateDownloadUrlResponse {
+  string download_url = 1;
+  int64 expires_at_unix = 2;
+}
